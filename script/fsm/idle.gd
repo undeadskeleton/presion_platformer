@@ -6,7 +6,8 @@ func update(delta):
 		return STATE.RUN
 	if player.jump_input == true:
 		return STATE.JUMP
-	if player.velocity.y > 0:
+	if player.velocity.y < 0:
+		#await get_tree().create_timer(0.5).timeout
 		return STATE.FALL
 	return null
 

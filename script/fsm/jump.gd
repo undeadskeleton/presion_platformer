@@ -8,5 +8,6 @@ func update(delta):
 	return null
 
 func enter():
-	player.velocity.y = player.JUMP_VELOCITY
+	print("Entering jump")
 	player.animated_sprite.play("jump")
+	player.velocity.y = player.JUMP_VELOCITY
