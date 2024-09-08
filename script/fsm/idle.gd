@@ -4,10 +4,9 @@ func update(delta):
 	player.gravity(delta)
 	if player.movement_input.x != 0:
 		return STATE.RUN
-	if player.jump_input == true:
+	if player.jump_input_actuation == true:
 		return STATE.JUMP
-	if player.velocity.y < 0:
-		#await get_tree().create_timer(0.5).timeout
+	if player.velocity.y >0:
 		return STATE.FALL
 	return null
 

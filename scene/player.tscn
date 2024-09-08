@@ -168,7 +168,6 @@ position = Vector2(0, 5)
 shape = SubResource("RectangleShape2D_oyhq6")
 
 [node name="Camera2D" type="Camera2D" parent="."]
-zoom = Vector2(2, 2)
 
 [node name="State_Machine" type="Node" parent="."]
 script = ExtResource("6_x6oaa")

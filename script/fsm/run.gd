@@ -5,11 +5,10 @@ func update(delta):
 	player_movement()
 	if player.velocity.x == 0:
 		return STATE.IDLE
-	if  player.jump_input:
-		return STATE.JUMP
-	if player.velocity.y < 0:
-		#await get_tree().create_timer(0.5).timeout
+	if player.velocity.y >0:
 		return STATE.FALL
+	if player.jump_input_actuation:
+		return STATE.JUMP
 	return null
 	
 func enter():

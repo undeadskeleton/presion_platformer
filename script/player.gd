@@ -3,7 +3,7 @@ extends CharacterBody2D
 
 const SPEED = 300.0
 const JUMP_VELOCITY = -400.0
-const gravity_value = 800
+const gravity_value = 8000.0
 
 #player input
 var movement_input : Vector2 =  Vector2.ZERO
