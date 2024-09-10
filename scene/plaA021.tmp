@@ -1,4 +1,4 @@
-[gd_scene load_steps=37 format=3 uid="uid://6p3p7ema3bd4"]
+[gd_scene load_steps=31 format=3 uid="uid://6p3p7ema3bd4"]
 
 [ext_resource type="Script" path="res://script/player.gd" id="1_g6emu"]
 [ext_resource type="Texture2D" uid="uid://c2autnt857cb5" path="res://assets/Dacian Warrior Animated Pixel-Art 2D/Fall/50x50/Fall 0 Sprite Sheet.png" id="1_u6p2h"]
@@ -11,19 +11,6 @@
 [ext_resource type="Script" path="res://script/fsm/jump.gd" id="8_kfxtw"]
 [ext_resource type="Script" path="res://script/fsm/fall.gd" id="9_hefc7"]
 [ext_resource type="Script" path="res://script/fsm/dash.gd" id="11_irh2s"]
-[ext_resource type="Script" path="res://script/fsm/slide.gd" id="12_357ww"]
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_75vay"]
-atlas = ExtResource("3_myws0")
-region = Rect2(100, 0, 50, 37)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_bvg2b"]
-atlas = ExtResource("3_myws0")
-region = Rect2(150, 0, 50, 37)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_v5oo3"]
-atlas = ExtResource("3_myws0")
-region = Rect2(200, 0, 50, 37)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_rjtra"]
 atlas = ExtResource("1_u6p2h")
@@ -93,30 +80,8 @@ region = Rect2(200, 0, 50, 37)
 atlas = ExtResource("4_qa8nj")
 region = Rect2(250, 0, 50, 37)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_hw30r"]
-atlas = ExtResource("1_u6p2h")
-region = Rect2(0, 0, 50, 50)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_e0uf6"]
-atlas = ExtResource("1_u6p2h")
-region = Rect2(50, 0, 50, 50)
-
 [sub_resource type="SpriteFrames" id="SpriteFrames_xax2m"]
 animations = [{
-"frames": [{
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_75vay")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_bvg2b")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_v5oo3")
-}],
-"loop": true,
-"name": &"climb",
-"speed": 5.0
-}, {
 "frames": [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_rjtra")
@@ -187,35 +152,23 @@ animations = [{
 "loop": true,
 "name": &"run",
 "speed": 5.0
-}, {
-"frames": [{
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_hw30r")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_e0uf6")
-}],
-"loop": true,
-"name": &"slide_down",
-"speed": 5.0
 }]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_oyhq6"]
-size = Vector2(14, 30)
+size = Vector2(14, 28)
 
 [node name="Player" type="CharacterBody2D"]
 script = ExtResource("1_g6emu")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_xax2m")
-animation = &"idle"
+animation = &"run"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(0, 4)
+position = Vector2(0, 5)
 shape = SubResource("RectangleShape2D_oyhq6")
 
 [node name="Camera2D" type="Camera2D" parent="."]
-zoom = Vector2(2, 2)
 
 [node name="State_Machine" type="Node" parent="."]
 script = ExtResource("6_x6oaa")
@@ -231,19 +184,12 @@ script = ExtResource("8_kfxtw")
 
 [node name="FALL" type="Node" parent="State_Machine"]
 script = ExtResource("9_hefc7")
-cayotetimer_duration = 1.0
-
-[node name="CayoteTImer" type="Timer" parent="State_Machine/FALL"]
-one_shot = true
 
 [node name="DASH" type="Node" parent="State_Machine"]
 script = ExtResource("11_irh2s")
 
 [node name="Dashduration_timer" type="Timer" parent="State_Machine/DASH"]
 one_shot = true
-
-[node name="SLIDE" type="Node" parent="State_Machine"]
-script = ExtResource("12_357ww")
 
 [node name="Label" type="Label" parent="."]
 offset_left = -26.0
@@ -253,29 +199,4 @@ offset_bottom = -9.0
 text = "STATES
 "
 
-[node name="Raycast" type="Node2D" parent="."]
-
-[node name="TopRight" type="RayCast2D" parent="Raycast"]
-position = Vector2(0, -9)
-target_position = Vector2(10, 0)
-collision_mask = 2
-
-[node name="BottomRight" type="RayCast2D" parent="Raycast"]
-position = Vector2(0, 17)
-target_position = Vector2(10, 0)
-collision_mask = 2
-
-[node name="TopLeft" type="RayCast2D" parent="Raycast"]
-position = Vector2(0, -9)
-rotation = -3.14159
-target_position = Vector2(10, 0)
-collision_mask = 2
-
-[node name="BottomLeft" type="RayCast2D" parent="Raycast"]
-position = Vector2(0, 17)
-rotation = -3.14159
-target_position = Vector2(10, 0)
-collision_mask = 2
-
-[connection signal="timeout" from="State_Machine/FALL/CayoteTImer" to="State_Machine/FALL" method="_on_cayote_t_imer_timeout"]
 [connection signal="timeout" from="State_Machine/DASH/Dashduration_timer" to="State_Machine/DASH" method="_on_timer_timeout"]

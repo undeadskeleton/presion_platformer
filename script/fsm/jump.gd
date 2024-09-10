@@ -7,6 +7,8 @@ func update(delta):
 		return STATE.FALL
 	if Player.dash_input and Player.can_dash:
 		return STATE.DASH
+	
+		
 		
 	if Player.DIR == 1:
 		Player.animated_sprite.flip_h = false

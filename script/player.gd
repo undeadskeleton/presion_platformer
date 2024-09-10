@@ -16,16 +16,15 @@ var can_dash : bool = false
 
 #player_movement
 var last_direction = Vector2.RIGHT
-const SPEED = 200.0
+const SPEED = 50.0
 const JUMP_VELOCITY = -800.0
 #states
 var current_state = null
 var previous_state = null
 
-
-#ANIMATION
+#NODES
+@onready var Raycasts = $Raycast
 @onready var animated_sprite = $AnimatedSprite2D
-#STATE_MACNINE
 @onready var STATES = $State_Machine
 
 
@@ -53,6 +52,16 @@ func change_state(input_state):
 		current_state = input_state
 		previous_state.exit()
 		current_state.enter()
+
+func get_next_to_wall():
+	for raycast in Raycasts.get_children():
+		raycast.force_raycast_update()
+		if raycast.is_colliding():
+			if raycast.target_position.x > 0:
+				return Vector2.RIGHT
+			else:
+				return Vector2.LEFT
+	return null
 
 func player_input():
 	movement_input = Vector2.ZERO
