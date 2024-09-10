@@ -1,84 +1,90 @@
 extends CharacterBody2D
 
 
-const SPEED = 300.0
-const JUMP_VELOCITY = -400.0
-const gravity_value = 8000.0
+var gravity_value = ProjectSettings.get_setting("physics/2d/default_gravity")
 
 #player input
-var movement_input : Vector2 =  Vector2.ZERO
+var movement_input = Vector2.ZERO
 var jump_input = false
 var jump_input_actuation = false
-var climb_input = false
+var climb_input = false 
 var dash_input = false
+var DIR : int
+#mechanics
 
+var can_dash : bool = false
+
+#player_movement
+var last_direction = Vector2.RIGHT
+const SPEED = 200.0
+const JUMP_VELOCITY = -800.0
+#states
 var current_state = null
 var previous_state = null
 
+
+#ANIMATION
 @onready var animated_sprite = $AnimatedSprite2D
+#STATE_MACNINE
+@onready var STATES = $State_Machine
 
-@onready var state_machine = $State_Machine
 
-func _ready() -> void:
-	for state in state_machine.get_children():
-		state.STATE = state_machine
-		state.player = self
-		
-	previous_state = state_machine.IDLE
-	current_state = state_machine.IDLE
+func _ready():
+	for state in STATES.get_children():
+		state.STATE = STATES
+		state.Player = self
+	previous_state = STATES.IDLE
+	current_state = STATES.IDLE
 
-func _physics_process(delta: float) -> void:
+func _physics_process(delta):
 	player_input()
 	change_state(current_state.update(delta))
 	$Label.text = str(current_state.get_name())
 	move_and_slide()
-	#default_move(delta)
-	
+
 func gravity(delta):
 	if not is_on_floor():
-		velocity.y += delta * gravity_value
-		print("player :",velocity.y)
-
+		velocity.y += gravity_value * delta
+		
 
 func change_state(input_state):
 	if input_state != null:
-		previous_state = current_state
+		previous_state = current_state 
 		current_state = input_state
-		
-	previous_state.exit()
-	current_state.enter()
+		previous_state.exit()
+		current_state.enter()
 
 func player_input():
 	movement_input = Vector2.ZERO
-	if Input.is_action_pressed("moveright"):
+	DIR = Input.get_axis("MoveLeft","MoveRight")
+	if Input.is_action_pressed("MoveRight"):
 		movement_input.x += 1
-	if Input.is_action_pressed("moveleft"):
-		movement_input.x -=1
-	if Input.is_action_pressed("moveup"):
-		movement_input.y -=1
-	if Input.is_action_pressed("movedown"):
-		movement_input.y +=1
+	if Input.is_action_pressed("MoveLeft"):
+		movement_input.x -= 1
+	if Input.is_action_pressed("MoveUp"):
+		movement_input.y -= 1
+	if Input.is_action_pressed("MoveDown"):
+		movement_input.y += 1
 	
-	#jump
-	if Input.is_action_pressed("jump"):
+	# jumps
+	if Input.is_action_pressed("Jump"):
 		jump_input = true
-	else:
+	else: 
 		jump_input = false
-	if Input.is_action_just_pressed("jump"):
+	if Input.is_action_just_pressed("Jump"):
 		jump_input_actuation = true
-	else:
+	else: 
 		jump_input_actuation = false
-		
-	 #climb
-	if Input.is_action_pressed("climb"):
-		climb_input = true
-	else:
-		climb_input = false
-		
-	#dash
-	if Input.is_action_pressed("dash"):
-		dash_input = true
-	else:
-		dash_input = false
 	
+	#climb
+	if Input.is_action_pressed("Climb"):
+		climb_input = true
+	else: 
+		climb_input = false
+	
+	#dash
+	if Input.is_action_just_pressed("Dash"):
+		dash_input = true
+	else: 
+		dash_input = false
 	

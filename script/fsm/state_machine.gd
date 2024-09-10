@@ -1,9 +1,10 @@
 extends Node
 
-@onready var RUN = $RUN
 @onready var IDLE = $IDLE
+@onready var RUN = $RUN
 @onready var JUMP = $JUMP
 @onready var FALL = $FALL
+@onready var DASH = $DASH
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	pass # Replace with function body.

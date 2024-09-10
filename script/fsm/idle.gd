@@ -1,14 +1,26 @@
 extends State
 
 func update(delta):
-	player.gravity(delta)
-	if player.movement_input.x != 0:
+	Player.gravity(delta)
+	if Player.movement_input.x != 0:
 		return STATE.RUN
-	if player.jump_input_actuation == true:
+	if Player.jump_input_actuation:
 		return STATE.JUMP
-	if player.velocity.y >0:
+	if Player.velocity.y >0:
 		return STATE.FALL
+	if Player.dash_input and Player.can_dash:
+		print("Player dash in idle is ",Player.can_dash)
+		return STATE.DASH
 	return null
 
 func enter():
-	player.animated_sprite.play("idle")
+	Player.can_dash = true
+	Player.animated_sprite.play("idle")
+	if Player.DIR == 1:
+		Player.animated_sprite.flip_h = true
+	elif Player.DIR == -1:
+		Player.animated_sprite.flip_h = false
+		
+
+func exit():
+	Player.can_dash = false

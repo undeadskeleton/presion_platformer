@@ -1,4 +1,4 @@
-[gd_scene load_steps=31 format=3 uid="uid://6p3p7ema3bd4"]
+[gd_scene load_steps=30 format=3 uid="uid://6p3p7ema3bd4"]
 
 [ext_resource type="Script" path="res://script/player.gd" id="1_g6emu"]
 [ext_resource type="Texture2D" uid="uid://c2autnt857cb5" path="res://assets/Dacian Warrior Animated Pixel-Art 2D/Fall/50x50/Fall 0 Sprite Sheet.png" id="1_u6p2h"]
@@ -10,7 +10,6 @@
 [ext_resource type="Script" path="res://script/fsm/run.gd" id="7_8qnup"]
 [ext_resource type="Script" path="res://script/fsm/jump.gd" id="8_kfxtw"]
 [ext_resource type="Script" path="res://script/fsm/fall.gd" id="9_hefc7"]
-[ext_resource type="Script" path="res://script/fsm/dash.gd" id="11_irh2s"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_rjtra"]
 atlas = ExtResource("1_u6p2h")
@@ -185,12 +184,6 @@ script = ExtResource("8_kfxtw")
 [node name="FALL" type="Node" parent="State_Machine"]
 script = ExtResource("9_hefc7")
 
-[node name="DASH" type="Node" parent="State_Machine"]
-script = ExtResource("11_irh2s")
-
-[node name="Dashduration_timer" type="Timer" parent="State_Machine/DASH"]
-one_shot = true
-
 [node name="Label" type="Label" parent="."]
 offset_left = -26.0
 offset_top = -32.0
@@ -198,5 +191,3 @@ offset_right = 30.0
 offset_bottom = -9.0
 text = "STATES
 "
-
-[connection signal="timeout" from="State_Machine/DASH/Dashduration_timer" to="State_Machine/DASH" method="_on_timer_timeout"]
